@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">KVWrapper</string>
+    <string name="switch_account">switch_account</string>
+    <string name="logout">logout</string>
+    <string name="login">login</string>
+    <string name="login_first_tips">Please login first</string>
+    <string name="main_tips">Launch %d times.</string>
+</resources>
