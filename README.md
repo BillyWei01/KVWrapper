@@ -4,8 +4,8 @@
 本项目演示了一套以kotlin委托属性为基础的key-value存储封装方案。 <br>
 包含了基础类型，Set<String>, byte[], 对象，枚举，Map等类型的封装方法。 <br>
 
-项目中是基于``SharePreferences``封装的模板，但这套方案也适用于其他类型的kv存储框架。<br>
-例如 [FastKV](https://github.com/BillyWei01/FastKV) 的 [KVData](https://github.com/BillyWei01/FastKV/blob/main/app/src/main/java/io/fastkv/fastkvdemo/fastkv/kvdelegate/KVData.kt) 就是按照套方案封装的。
+项目中是基于``SharePreferences``封装的，但这套方案也适用于其他类型的KV存储框架。<br>
+例如 [FastKV](https://github.com/BillyWei01/FastKV) 的 [KVData](https://github.com/BillyWei01/FastKV/blob/main/app/src/main/java/io/fastkv/fastkvdemo/fastkv/kvdelegate/KVData.kt) 就是按照这套方案封装的。
 
 ## 二、 封装方法
 封装过程包含 **基类定义** 和 **委托实现** 两部分。<br>
@@ -236,6 +236,10 @@ object RemoteSetting : UserKV("remote_setting", 0L) {
 ```
 
 ## 四、 相关链接
+掘金博客:
+https://juejin.cn/post/7323449163420303370
+
+FastKV:
 https://juejin.cn/post/7018522454171582500
 
 
