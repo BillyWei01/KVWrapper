@@ -1,8 +1,8 @@
 package io.github.kvwrapper.kvbase
 
 import io.github.kvwrapper.base.AppContext
-import io.github.kvwrapper.kvdelegate.KVData
-import io.github.kvwrapper.util.SpKV
+import io.github.kvwrapper.KVData
+import io.github.kvwrapper.KVStore
 import io.github.kvwrapper.util.Utils
 
 /**
@@ -14,7 +14,7 @@ abstract class UserKV(
     private val name: String,
     private val userId: Long
 ) : KVData() {
-    override val kv: SpKV by lazy {
+    override val kv: KVStore by lazy {
         val fileName = "${name}_${userId}_${AppContext.env.tag}"
         if (AppContext.debug) {
             SpKV(fileName)

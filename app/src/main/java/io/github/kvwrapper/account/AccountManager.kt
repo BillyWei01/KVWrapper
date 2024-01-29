@@ -67,7 +67,7 @@ object AccountManager {
     private fun fetchUserInfo(uid: Long) {
         UserInfo.get(uid).run {
             isVip = true
-            gender = Gender.CONVERTER.intToType((uid % 10000 % 3).toInt())
+            gender = Gender.intToType((uid % 10000 % 3).toInt())
             fansCount = Random.nextInt(10000)
             score = 4.5f
             loginTime = System.currentTimeMillis()
@@ -109,11 +109,11 @@ object AccountManager {
                     .append("sign: ").append(sign).append('\n')
                     .append("lock: ").append(Utils.bytes2Hex(lock)).append('\n')
                     .append("tags: ").append(tags).append('\n')
-                    .append("favorite, Android:").append(favorites["Android"]).append('\n')
-                    .append("favorite, iOS:").append(favorites["iOS"]).append('\n')
-                    .append("favorite, PC:").append(favorites["PC"]).append('\n')
+                    .append("favorite, Android: ").append(favorites["Android"]).append('\n')
+                    .append("favorite, iOS: ").append(favorites["iOS"]).append('\n')
+                    .append("favorite, PC: ").append(favorites["PC"]).append('\n')
                     .append("theme: ").append(config.getString("theme")).append('\n')
-                    .append("notification: ").append(config.getBoolean("notification"))
+                    .append("notification: ").append(config.getBoolean("notification", false))
             }
         }
         return builder.toString()

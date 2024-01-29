@@ -18,5 +18,5 @@ object RemoteSetting : UserKV("remote_setting", 0L) {
     /**
      * 服务端下发的配置项
      */
-    val setting by combineKey("setting")
+    val setting by combineKV("setting")
 }

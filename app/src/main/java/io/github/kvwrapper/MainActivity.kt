@@ -3,9 +3,11 @@ package io.github.kvwrapper
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import io.github.kvwrapper.account.AccountManager
 import io.github.kvwrapper.base.AppContext
+import io.github.kvwrapper.data.LocalSetting
 import io.github.kvwrapper.data.UsageData
 import io.github.kvwrapper.data.UserInfo
 import io.github.kvwrapper.databinding.ActivityMainBinding
@@ -50,6 +52,8 @@ class MainActivity : AppCompatActivity() {
             }
             refreshAccountInfoViews()
         }
+
+        test()
     }
 
     @SuppressLint("SetTextI18n")
@@ -75,5 +79,19 @@ class MainActivity : AppCompatActivity() {
         val t = UsageData.launchCount + 1
         binding.tipsTv.text = getString(R.string.main_tips, t)
         UsageData.launchCount = t
+    }
+
+    /**
+     * 测试扩展key类型的委托属性
+     */
+    private fun test() {
+        if (LocalSetting.idToName[1] == null || LocalSetting.idToName[2] == null) {
+            Log.d("MainActivity", "Put values to idToName")
+            LocalSetting.idToName[1] = "Jonn"
+            LocalSetting.idToName[2] = "Mary"
+        } else {
+            Log.d("MainActivity", "There are values in idToName")
+        }
+        Log.d("MainActivity", "idToName values: 1 -> ${LocalSetting.idToName[1]}, 2 -> ${LocalSetting.idToName[2]}")
     }
 }

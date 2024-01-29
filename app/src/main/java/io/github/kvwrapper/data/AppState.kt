@@ -14,7 +14,7 @@ object AppState : GlobalKV("app_state") {
      *
      * 这个信息时作为[UserKV]实例的路径参数之一，决定了只能用[GlobalKV]来存储，否则就循环依赖了
      */
-    var environment by stringEnum("environment", Env.CONVERTER)
+    var environment by obj("environment", Env.CONVERTER, Env.PPE)
 
     /**
      * 用户ID

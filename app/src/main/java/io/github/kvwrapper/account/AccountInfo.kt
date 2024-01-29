@@ -1,18 +1,20 @@
 package io.github.kvwrapper.account
 
+import androidx.annotation.Keep
 import com.google.gson.Gson
-import io.github.kvwrapper.kvdelegate.ObjectEncoder
+import io.github.kvwrapper.NullableObjectEncoder
 import java.io.Serializable
 
+@Keep
 data class AccountInfo(
-    var uid: Long,
-    var token: String,
-    var nickname: String,
-    var phoneNo: String,
-    var email: String
+    val uid: Long,
+    val token: String,
+    val nickname: String,
+    val phoneNo: String,
+    val email: String
 ) : Serializable {
     companion object {
-        val ENCODER = object : ObjectEncoder<AccountInfo> {
+        val ENCODER = object : NullableObjectEncoder<AccountInfo> {
             override fun encode(obj: AccountInfo?): String? {
                 if (obj == null) return null
                 return Gson().toJson(obj)

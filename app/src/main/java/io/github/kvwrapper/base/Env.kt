@@ -1,6 +1,6 @@
 package io.github.kvwrapper.base
 
-import io.github.kvwrapper.kvdelegate.StringEnumConverter
+import io.github.kvwrapper.ObjectEncoder
 
 
 /**
@@ -28,13 +28,13 @@ enum class Env(val tag: String) {
     BOE("boe");
 
     companion object {
-        val CONVERTER = object : StringEnumConverter<Env> {
-            override fun stringToType(str: String?): Env {
-               return if (str == BOE.tag) BOE else PPE
+        val CONVERTER = object : ObjectEncoder<Env> {
+            override fun encode(obj: Env): String {
+                return obj.tag
             }
 
-            override fun typeToString(type: Env): String {
-               return type.tag
+            override fun decode(data: String): Env {
+                return if (data == BOE.tag) BOE else PPE
             }
         }
     }
