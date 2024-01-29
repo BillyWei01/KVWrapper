@@ -57,7 +57,7 @@ class NullableBooleanProperty(private val key: String) :
 由于kotlin区分了可空类型和非空类型，方案中也分别封装了可空和非空两种委托。
 
 ### 2.2 基类定义
-实现了委托之后，我们将各种委托API封装到一个基类中：[KVData.kt](https://github.com/BillyWei01/KVWrapper/blob/main/kvwrapper/src/main/java/io/github/kvwrapper/KVData.kt)
+实现了委托之后，我们将各种委托API封装到一个基类中：[KVData](https://github.com/BillyWei01/KVWrapper/blob/main/kvwrapper/src/main/java/io/github/kvwrapper/KVData.kt)
 
 ```kotlin
 abstract class KVData {
@@ -109,13 +109,13 @@ abstract class KVData {
 }
 ```
 
-使用时，继承`KVData`，然后实现`kv`, 返回一个[KVStore.kt](https://github.com/BillyWei01/KVWrapper/blob/main/kvwrapper/src/main/java/io/github/kvwrapper/KVStore)的实现类即可。
+使用时，继承`KVData`，然后实现`kv`, 返回一个[KVStore](https://github.com/BillyWei01/KVWrapper/blob/main/kvwrapper/src/main/java/io/github/kvwrapper/KVStore.kt)的实现类即可。
 接下来说明一下具体的使用方法。
 
 ## 三、 使用方法
 ### 3.1 读写API的实现
 上面我们提到，`KVData`需要一个`KVStore`的实现类。
-我们以`SharedPreferences`为例，其实现如下：
+我们以`SharedPreferences`为例，实现如下：
 
 ```kotlin
 class SpKV(name: String): KVStore {
@@ -145,11 +145,11 @@ class SpKV(name: String): KVStore {
 }
 ```
 
-抽象来看，访问KV存储，和访问[Map]是类似的。<br>
+抽象来看，访问KV存储，和访问`Map`是类似的。<br>
 常用的API，包括 put，get，remove, contains等。 <br>
 而 put(key, null) 等价于 remove(key) ；<br>
 get(key) != null 等价于 contains(key) == true。<br>
-故此，在定义[KVStore]接口时，我们可以简化接口，省略 remove 和 contains。<br>
+故此，在定义`KVStore`接口时，我们可以简化接口，省略 remove 和 contains。<br>
 
 对于基础类型, 如果要实现不存在value时返回null, 需要先调用存储API contains 判断value是否存在。<br>
 因此，基于效率的考虑，我们同时声明 get(key):T? 和 get(key, defValue): T 接口。
