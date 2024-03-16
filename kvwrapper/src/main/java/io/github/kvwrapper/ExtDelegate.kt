@@ -30,9 +30,8 @@ class CombineKV(private val key: String, private val kvData: KVData): KVStore {
     private val kv: KVStore
         get() = kvData.kv
 
-    private fun combineKey(extKey: Any): String {
-        val extKeyStr = extKey.toString()
-        return if (extKeyStr.isEmpty()) key else "$key$SEPARATOR$extKeyStr"
+    private fun combineKey(extKey: String): String {
+        return if (extKey.isEmpty()) key else "$key$SEPARATOR$extKey"
     }
 
     override fun putBoolean(extKey: String, value: Boolean?) {
