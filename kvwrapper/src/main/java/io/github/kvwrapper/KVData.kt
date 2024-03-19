@@ -37,7 +37,7 @@ abstract class KVData {
     protected fun nullableDouble(key: String) = NullableDoubleProperty(key)
     protected fun nullableString(key: String) = NullableStringProperty(key)
     protected fun nullableStringSet(key: String) = NullableStringSetProperty(key)
-    protected fun <T> nullableObj(key: String, encoder: ObjectConverter<T>, ) = NullableObjectProperty(key, encoder)
+    protected fun <T> nullableObj(key: String, encoder: ObjectConverter<T>) = NullableObjectProperty(key, encoder)
 
     // 扩展key的基础类型
     protected fun extBoolean(key: String, defValue: Boolean = false) = ExtBooleanProperty(key, defValue)

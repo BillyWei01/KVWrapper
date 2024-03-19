@@ -16,7 +16,7 @@
 2. **扩展key的基础类型** <br>
 基础类型的委托，定义属性时需传入常量的`key`，通过委托所访问到的是`key`对应的`value`； <br>
 而开发中有时候需要【常量+变量】的key，基础类型的委托无法实现。<br>
-为此，方案中实现了一个[CombineKVHandler]类，以及基于[CombineKVHandler]实现了各类委托，达成通过两级key来访问`value`。<br>
+为此，方案中实现了一个`CombineKVHandler`类，以及基于`CombineKVHandler`实现了各类委托，达成通过两级key来访问`value`。<br>
 
 ### 2.1 委托实现
 **基础类型**：[BasicDelegate.kt](https://github.com/BillyWei01/KVWrapper/blob/main/kvwrapper/src/main/java/io/github/kvwrapper/BasicDelegate.kt) <br>
@@ -79,7 +79,7 @@ abstract class KVData {
     protected fun nullableDouble(key: String) = NullableDoubleProperty(key)
     protected fun nullableString(key: String) = NullableStringProperty(key)
     protected fun nullableStringSet(key: String) = NullableStringSetProperty(key)
-    protected fun <T> nullableObj(key: String, encoder: ObjectConverter<T>, ) = NullableObjectProperty(key, encoder)
+    protected fun <T> nullableObj(key: String, encoder: ObjectConverter<T>) = NullableObjectProperty(key, encoder)
 
     // 扩展key的基础类型
     protected fun extBoolean(key: String, defValue: Boolean = false) = ExtBooleanProperty(key, defValue)
