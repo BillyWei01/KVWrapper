@@ -11,8 +11,8 @@ package io.github.kvwrapper
  * 2. 扩展key的基础类型
  * 基础类型的委托，定义属性时需传入常量的`key`，通过委托所访问到的是`key`对应的`value`；
  * 而开发中有时候需要【常量+变量】的key，基础类型的委托无法实现。
- * 为此，方案中实现了一个[CombineKVHandler]类，
- * 以及基于[CombineKVHandler]实现了各类委托，达成通过两级key来访问`value`。
+ * 为此，方案中实现了一个[CombineKV]类，
+ * 以及基于[CombineKV]实现了各类委托，达成通过两级key来访问`value`。
  *
  * 每一种类型都分别封装了可空和非空两种委托实现。
  */
