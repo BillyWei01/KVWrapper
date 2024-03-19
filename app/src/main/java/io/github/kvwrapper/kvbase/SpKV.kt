@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import io.github.kvwrapper.base.AppContext
 import io.github.kvwrapper.KVStore
+import io.github.kvwrapper.ObjectConverter
 
 /**
  * 以 [SharedPreferences] 为基础的 [KVStore] 的实现
@@ -22,7 +23,7 @@ class SpKV(name: String): KVStore {
 
     // 基本类型，要实现不存在value时返回null, 需要先调用 contains 判断
     override fun getBoolean(key: String): Boolean? {
-        return if (sp.contains(key)) sp.getBoolean(key, false) else null
+        return if (contains(key)) sp.getBoolean(key, false) else null
     }
 
     // 因此，如果有默认值，直接调用带默认值的方法会更有效率
@@ -39,7 +40,7 @@ class SpKV(name: String): KVStore {
     }
 
     override fun getInt(key: String): Int? {
-        return if (sp.contains(key)) sp.getInt(key, 0) else null
+        return if (contains(key)) sp.getInt(key, 0) else null
     }
 
     override fun getInt(key: String, defValue: Int): Int {
@@ -55,7 +56,7 @@ class SpKV(name: String): KVStore {
     }
 
     override fun getFloat(key: String): Float? {
-        return if (sp.contains(key)) sp.getFloat(key, 0f) else null
+        return if (contains(key)) sp.getFloat(key, 0f) else null
     }
 
     override fun getFloat(key: String, defValue: Float): Float {
@@ -71,7 +72,7 @@ class SpKV(name: String): KVStore {
     }
 
     override fun getLong(key: String): Long? {
-        return if (sp.contains(key)) sp.getLong(key, 0L) else null
+        return if (contains(key)) sp.getLong(key, 0L) else null
     }
 
     override fun getLong(key: String, defValue: Long): Long {
@@ -87,7 +88,7 @@ class SpKV(name: String): KVStore {
     }
 
     override fun getDouble(key: String): Double? {
-        return if (sp.contains(key)) getDouble(key, 0.0) else null
+        return if (contains(key)) getDouble(key, 0.0) else null
     }
 
     override fun getDouble(key: String, defValue: Double): Double {
@@ -100,7 +101,6 @@ class SpKV(name: String): KVStore {
         editor.putString(key, value).apply()
     }
 
-    // getString要实现没有value时返回null, 不需要先判断contains, 直接defValue传null即可。
     override fun getString(key: String): String? {
         return sp.getString(key, null)
     }
@@ -113,11 +113,24 @@ class SpKV(name: String): KVStore {
         return sp.getStringSet(key, null)
     }
 
-    fun remove(key: String) {
+    override fun <T> putObject(key: String, value: T?, encoder: ObjectConverter<T>) {
+        if (value == null) {
+            remove(key)
+        } else {
+            kotlin.runCatching { putString(key, encoder.encode(value)) }
+        }
+    }
+
+    override fun <T> getObject(key: String, encoder: ObjectConverter<T>): T? {
+        val value = getString(key) ?: return null
+        return kotlin.runCatching { encoder.decode(value) }.getOrNull()
+    }
+
+    private fun remove(key: String) {
         editor.remove(key).apply()
     }
 
-    fun contains(key: String): Boolean {
+    private fun contains(key: String): Boolean {
         return sp.contains(key)
     }
 }

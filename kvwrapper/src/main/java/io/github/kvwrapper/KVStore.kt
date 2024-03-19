@@ -53,4 +53,14 @@ interface KVStore {
     fun putStringSet(key: String, value: Set<String>?)
 
     fun getStringSet(key: String): Set<String>?
+
+    fun <T> putObject(key: String, value: T?, encoder: ObjectConverter<T>)
+
+    fun <T> getObject(key: String, encoder: ObjectConverter<T>): T?
+}
+
+interface ObjectConverter<T> {
+    fun encode(obj: T): String
+
+    fun decode(text: String): T
 }

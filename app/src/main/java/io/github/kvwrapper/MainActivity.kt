@@ -92,6 +92,21 @@ class MainActivity : AppCompatActivity() {
         } else {
             Log.d("MainActivity", "There are values in idToName")
         }
-        Log.d("MainActivity", "idToName values: 1 -> ${LocalSetting.idToName[1]}, 2 -> ${LocalSetting.idToName[2]}")
+        Log.d(
+            "MainActivity",
+            "idToName values: 1 -> ${LocalSetting.idToName[1]}, 2 -> ${LocalSetting.idToName[2]}"
+        )
+
+        if (LocalSetting.favorites["Android"].isEmpty() || LocalSetting.favorites["iOS"].isEmpty()) {
+            Log.d("MainActivity", "Put values to favorites")
+            LocalSetting.favorites["Android"] = setOf("A", "B", "C")
+            LocalSetting.favorites["iOS"] = setOf("D", "E", "F", "G")
+        } else {
+            Log.d("MainActivity", "There are values in favorites")
+        }
+        Log.d(
+            "MainActivity",
+            "idToName values: Android -> ${LocalSetting.favorites["Android"]}, iOS -> ${LocalSetting.favorites["iOS"]}"
+        )
     }
 }

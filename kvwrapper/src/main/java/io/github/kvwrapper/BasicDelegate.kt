@@ -172,34 +172,18 @@ class NullableStringSetProperty(private val key: String) :
 
 //--------------------------------------------------------------------
 
-interface ObjectEncoder<T>{
-    fun encode(obj: T): String
-
-    fun decode(data: String): T
-}
-
-interface NullableObjectEncoder<T>{
-    fun encode(obj: T?): String?
-
-    fun decode(data: String?): T?
-}
-
 class ObjectProperty<T>(
     private val key: String,
-    private val encoder: ObjectEncoder<T>,
-    private val defValue: T) :
+    private val encoder: ObjectConverter<T>,
+    private val defValue: T
+) :
     ReadWriteProperty<KVData, T> {
     private var instance: T? = null
 
     @Synchronized
     override fun getValue(thisRef: KVData, property: KProperty<*>): T {
         if (instance == null) {
-            kotlin.runCatching {
-                val value = thisRef.kv.getString(key)
-                if (value != null) {
-                    instance = encoder.decode(value)
-                }
-            }
+            instance = thisRef.kv.getObject(key, encoder)
         }
         return instance ?: defValue
     }
@@ -208,14 +192,14 @@ class ObjectProperty<T>(
     override fun setValue(thisRef: KVData, property: KProperty<*>, value: T) {
         instance = value
         kotlin.runCatching {
-            thisRef.kv.putString(key, encoder.encode(value))
+            thisRef.kv.putObject(key, value, encoder)
         }
     }
 }
 
 class NullableObjectProperty<T>(
     private val key: String,
-    private val encoder: NullableObjectEncoder<T>
+    private val encoder: ObjectConverter<T>
 ) :
     ReadWriteProperty<KVData, T?> {
     private var instance: T? = null
@@ -223,10 +207,7 @@ class NullableObjectProperty<T>(
     @Synchronized
     override fun getValue(thisRef: KVData, property: KProperty<*>): T? {
         if (instance == null) {
-            kotlin.runCatching {
-                val value = thisRef.kv.getString(key)
-                instance = encoder.decode(value)
-            }
+            instance = thisRef.kv.getObject(key, encoder)
         }
         return instance
     }
@@ -235,7 +216,7 @@ class NullableObjectProperty<T>(
     override fun setValue(thisRef: KVData, property: KProperty<*>, value: T?) {
         instance = value
         kotlin.runCatching {
-            thisRef.kv.putString(key, encoder.encode(value))
+            thisRef.kv.putObject(key, value, encoder)
         }
     }
 }
