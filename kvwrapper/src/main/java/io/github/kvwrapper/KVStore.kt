@@ -64,3 +64,11 @@ interface ObjectConverter<T> {
 
     fun decode(text: String): T
 }
+
+internal fun <T> ObjectConverter<T>.encodeValue(obj: T?): String? {
+    return if (obj == null) null else kotlin.runCatching { encode(obj) }.getOrNull()
+}
+
+internal fun <T> ObjectConverter<T>.decodeValue(text: String?): T? {
+    return if (text == null) null else kotlin.runCatching { decode(text) }.getOrNull()
+}

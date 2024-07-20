@@ -178,46 +178,51 @@ class ObjectProperty<T>(
     private val defValue: T
 ) :
     ReadWriteProperty<KVData, T> {
-    private var instance: T? = null
+    private var typedValue: T? = null
+    private var textValue: String? = null
 
     @Synchronized
     override fun getValue(thisRef: KVData, property: KProperty<*>): T {
-        if (instance == null) {
-            instance = thisRef.kv.getObject(key, encoder)
+        val text = thisRef.kv.getString(key)
+        if (text != textValue) {
+            textValue = text
+            typedValue = encoder.decodeValue(text)
         }
-        return instance ?: defValue
+        return typedValue ?: defValue
     }
 
     @Synchronized
     override fun setValue(thisRef: KVData, property: KProperty<*>, value: T) {
-        instance = value
-        kotlin.runCatching {
-            thisRef.kv.putObject(key, value, encoder)
-        }
+        val text = encoder.encodeValue(value)
+        textValue = text
+        typedValue = value
+        thisRef.kv.putString(key, text)
     }
 }
 
 class NullableObjectProperty<T>(
     private val key: String,
-    private val encoder: ObjectConverter<T>
-) :
-    ReadWriteProperty<KVData, T?> {
-    private var instance: T? = null
+    private val converter: ObjectConverter<T>
+) : ReadWriteProperty<KVData, T?> {
+    private var typedValue: T? = null
+    private var textValue: String? = null
 
     @Synchronized
     override fun getValue(thisRef: KVData, property: KProperty<*>): T? {
-        if (instance == null) {
-            instance = thisRef.kv.getObject(key, encoder)
+        val text = thisRef.kv.getString(key)
+        if (text != textValue) {
+            textValue = text
+            typedValue = converter.decodeValue(text)
         }
-        return instance
+        return typedValue
     }
 
     @Synchronized
     override fun setValue(thisRef: KVData, property: KProperty<*>, value: T?) {
-        instance = value
-        kotlin.runCatching {
-            thisRef.kv.putObject(key, value, encoder)
-        }
+        val text = converter.encodeValue(value)
+        textValue = text
+        typedValue = value
+        thisRef.kv.putString(key, text)
     }
 }
 

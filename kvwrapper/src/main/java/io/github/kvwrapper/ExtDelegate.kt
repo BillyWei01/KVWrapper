@@ -366,15 +366,15 @@ class ExtObjectProperty<T>(key: String, encoder: ObjectConverter<T>, defValue: T
 
 class ExtObject<T>(
     private val combineKV: CombineKV,
-    private val encoder: ObjectConverter<T>,
+    private val converter: ObjectConverter<T>,
     private val defValue: T
 ) {
     operator fun get(extKey: Any): T {
-        return combineKV.getObject(extKey.toString(), encoder) ?: defValue
+        return combineKV.getObject(extKey.toString(), converter) ?: defValue
     }
 
     operator fun set(extKey: Any, value: T) {
-        combineKV.putObject(extKey.toString(), value, encoder)
+        combineKV.putObject(extKey.toString(), value, converter)
     }
 }
 
@@ -383,14 +383,14 @@ class ExtNullableObjectProperty<T>(key: String, encoder: ObjectConverter<T>) :
 
 class ExtNullableObject<T>(
     private val combineKV: CombineKV,
-    private val encoder: ObjectConverter<T>,
+    private val converter: ObjectConverter<T>,
 ) {
     operator fun get(extKey: Any): T? {
-        return combineKV.getObject(extKey.toString(), encoder)
+        return combineKV.getObject(extKey.toString(), converter)
     }
 
     operator fun set(extKey: Any, value: T?) {
-        combineKV.putObject(extKey.toString(), value, encoder)
+        combineKV.putObject(extKey.toString(), value, converter)
     }
 }
 
